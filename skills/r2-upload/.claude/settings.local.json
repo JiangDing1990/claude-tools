@@ -1,9 +1,0 @@
-{
-  "disabledMcpjsonServers": [
-    "chrome-devtools",
-    "memory",
-    "context7",
-    "weixin-reader",
-    "bb-browser"
-  ]
-}
