@@ -16,11 +16,18 @@ Skills are prompt + script bundles that extend Claude Code's capabilities. Once 
 
 ## Installation
 
-### Install a Skill
+### Option 1: Remote install (recommended)
 
-Copy the skill directory into Claude Code's skills folder and register it in `~/.claude/settings.json`.
+Install any skill directly with a single command — no cloning required:
 
-Using `weixin-article-fetcher` as an example:
+```bash
+npx skills add JiangDing1990/claude-tools --skill weixin-article-fetcher
+npx skills add JiangDing1990/claude-tools --skill r2-upload
+```
+
+Restart Claude Code and the skill is ready to use.
+
+### Option 2: Manual install
 
 ```bash
 # 1. Clone the repository

@@ -12,15 +12,22 @@ Skills 是用于扩展 Claude Code 能力的提示词 + 脚本组合，安装后
 | 名称 | 说明 | 版本 |
 |------|------|------|
 | [weixin-article-fetcher](skills/weixin-article-fetcher/) | 抓取微信公众号文章，转换为干净的 Markdown，支持单篇和批量下载 | v1.0.0 |
-| [r2-upload](skills/r2-upload/) | 上传文件/图片到 Cloudflare R2，返回永久公开 URL，支持本地路径、base64、base64 文件、远程 URL 四种输入 | v1.0.0 |
+| [r2-upload](skills/r2-upload/) | 上传文件/图片到 Cloudflare R2，返回永久公开 URL，支持本地路径、base64、base64 文件、远程 URL 四种��入 | v1.0.0 |
 
 ## 安装
 
-### 安装 Skill
+### 方式一：远程安装（推荐）
 
-将对应 skill 目录复制到 Claude Code 的 skills 目录，然后在 `~/.claude/settings.json` 中注册即可。
+无需克隆仓库，一行命令直接安装指定 skill：
 
-以 `weixin-article-fetcher` 为例：
+```bash
+npx skills add JiangDing1990/claude-tools --skill weixin-article-fetcher
+npx skills add JiangDing1990/claude-tools --skill r2-upload
+```
+
+重启 Claude Code 即可使用。
+
+### 方式二：手动安装
 
 ```bash
 # 1. 克隆仓库

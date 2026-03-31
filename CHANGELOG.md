@@ -11,6 +11,11 @@ Each skill maintains its own version independently; changes are grouped by relea
 
 ### Added
 
+- **远程安装支持**：可通过 `npx skills add` 一键安装指定 skill，无需手动克隆仓库
+- **weixin-article-fetcher** `v1.0.0` README.md — 新增面向人类读者的说明文档
+
+### Added
+
 - **r2-upload** `v1.0.0` — Cloudflare R2 文件上传 skill
   - 支持本地文件、base64/data-URL、base64 文件、远程 URL 四种输入模式
   - 按 MIME 类型自动选择存储前缀（images / videos / audios / files）
