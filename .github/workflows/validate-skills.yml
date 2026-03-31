@@ -1,0 +1,66 @@
+name: Validate Skills
+
+on:
+  push:
+    paths:
+      - "skills/**"
+  pull_request:
+    paths:
+      - "skills/**"
+
+jobs:
+  validate:
+    name: Check skill structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate each skill directory
+        run: |
+          set -e
+          errors=0
+
+          for skill_dir in skills/*/; do
+            skill_name=$(basename "$skill_dir")
+
+            # 必须包含 SKILL.md
+            if [ ! -f "${skill_dir}SKILL.md" ]; then
+              echo "::error file=${skill_dir}::Missing SKILL.md in skill '${skill_name}'"
+              errors=$((errors + 1))
+            fi
+
+            # SKILL.md 必须包含 frontmatter（以 --- 开头）
+            if [ -f "${skill_dir}SKILL.md" ]; then
+              if ! head -1 "${skill_dir}SKILL.md" | grep -q "^---"; then
+                echo "::error file=${skill_dir}SKILL.md::SKILL.md in '${skill_name}' is missing YAML frontmatter (must start with ---)"
+                errors=$((errors + 1))
+              fi
+            fi
+
+            # SKILL.md frontmatter 必须包含 name 字段
+            if [ -f "${skill_dir}SKILL.md" ]; then
+              if ! grep -q "^name:" "${skill_dir}SKILL.md"; then
+                echo "::error file=${skill_dir}SKILL.md::SKILL.md in '${skill_name}' is missing required 'name' field in frontmatter"
+                errors=$((errors + 1))
+              fi
+            fi
+
+            # SKILL.md frontmatter 必须包含 description 字段
+            if [ -f "${skill_dir}SKILL.md" ]; then
+              if ! grep -q "^description:" "${skill_dir}SKILL.md"; then
+                echo "::error file=${skill_dir}SKILL.md::SKILL.md in '${skill_name}' is missing required 'description' field in frontmatter"
+                errors=$((errors + 1))
+              fi
+            fi
+
+            echo "✓ ${skill_name}"
+          done
+
+          if [ $errors -gt 0 ]; then
+            echo ""
+            echo "Found ${errors} validation error(s). See SKILL_SPEC.md for the skill structure requirements."
+            exit 1
+          fi
+
+          echo ""
+          echo "All skills are valid."

@@ -1,0 +1,35 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 构建产物
+*.tar.gz
+*.zip
+
+# 分析工具数据目录（不提交原始数据和中间产物）
+skill-analytics/data/exports/
+skill-analytics/data/processed/
+skill-analytics/data/review-queue.json
+
+# 环境变量
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.codelink
+
+# .claude/
+.claude/settings.local.json
+*/.claude/settings.local.json
