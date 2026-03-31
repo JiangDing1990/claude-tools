@@ -33,3 +33,4 @@ skill-analytics/data/review-queue.json
 # .claude/
 .claude/settings.local.json
 */.claude/settings.local.json
+**/.claude/settings.local.json
