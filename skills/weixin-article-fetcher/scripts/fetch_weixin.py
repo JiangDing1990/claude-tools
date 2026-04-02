@@ -275,8 +275,6 @@ def html_to_markdown(content_div: BeautifulSoup) -> str:
         str(content_div),
         heading_style="ATX",
         bullets="-",
-        strip=["script", "style"],
-        newline_style="backslash",
     )
     raw = re.sub(r"\n{3,}", "\n\n", raw)          # collapse excess blank lines
     raw = "\n".join(line.rstrip() for line in raw.splitlines())  # strip trailing spaces
@@ -609,6 +607,8 @@ Examples:
 
     if args.output:
         output_dir: Optional[Path] = Path(args.output)
+    elif len(urls) == 1 and not args.batch:
+        output_dir = None  # Single URL: print markdown to stdout
     else:
         output_dir = Path.home() / "weixin_output"
 

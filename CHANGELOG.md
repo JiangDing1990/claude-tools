@@ -7,6 +7,15 @@ Each skill maintains its own version independently; changes are grouped by relea
 
 ## [Unreleased]
 
+## [2026-04-02]
+
+### Fixed
+
+- **weixin-article-fetcher** `v1.0.1`
+  - 修复单篇 URL 未输出到 stdout 的问题：原逻辑对所有输入均写入文件，现在单 URL 且未指定 `--output` 时正确输出到 stdout
+  - 更正限流退避策略描述：将 "指数退避" 改为准确的 "线性退避"（3s → 6s → 9s）
+  - 移除 `markdownify` 的冗余参数 `strip` 和 `newline_style`，避免与上层 `clean_content()` 的去噪逻辑冲突
+
 ## [2026-03-31]
 
 ### Added

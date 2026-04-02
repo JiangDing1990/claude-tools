@@ -10,7 +10,7 @@ Bypasses the WeChat slider captcha by spoofing the iOS WeChat User-Agent, then e
 - **Three fetch modes** — single article (stdout), multiple URLs, or batch from a text file
 - **Clean Markdown output** — lazy-loaded images promoted, noise elements stripped
 - **Resume support** — already-fetched URLs are skipped automatically via `results.json`
-- **Rate limit handling** — HTTP 429 triggers exponential back-off (3s → 6s → 9s)
+- **Rate limit handling** — HTTP 429 triggers linear back-off (3s → 6s → 9s)
 - **Randomized User-Agent pool** — rotates across iOS 15–18 and WeChat 8.0.47–8.0.52 profiles
 - **Structured output** — title, cover image URL, article body, and fetch status per article
 
@@ -71,12 +71,12 @@ python3 scripts/fetch_weixin.py --batch urls.txt --output ./articles --delay 2
 | Flag | Description |
 |------|-------------|
 | `--batch` / `-b` | Text file with one URL per line |
-| `--output` / `-o` | Output directory (default: `~/weixin_output/`) |
+| `--output` / `-o` | Output directory (default: stdout for single URL, `~/weixin_output/` for multiple) |
 | `--delay` / `-d` | Seconds between requests (default: 1.5) |
 
 ## Output
 
-Each article is saved as `<title>.md`:
+**Single URL** — markdown is printed to stdout in this format:
 
 ```markdown
 # 文章标题
@@ -86,7 +86,7 @@ Each article is saved as `<title>.md`:
 正文内容（标准 Markdown 格式）...
 ```
 
-Batch runs also produce a `results.json` summary:
+**Multiple URLs / batch** — each article is saved as `<title>.md` in the output directory. A `results.json` summary is also written:
 
 ```json
 {
@@ -108,7 +108,7 @@ If `results.json` already exists in the output directory, previously fetched URL
 | Invalid / non-WeChat URL | Skipped with warning |
 | Article deleted / restricted | Logged as failed in `results.json` |
 | HTTP error / timeout | Retried up to 3×, then logged as failed |
-| Rate limiting (429) | Exponential back-off: 3s → 6s → 9s |
+| Rate limiting (429) | Linear back-off: 3s → 6s → 9s |
 | Missing cover image | `cover_image: null` in output |
 | No content div found | Empty body, warning logged |
 | Duplicate filename | Auto-suffixed: `title_1.md`, `title_2.md`, … |

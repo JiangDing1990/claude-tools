@@ -11,7 +11,7 @@ Skills 是用于扩展 Claude Code 能力的提示词 + 脚本组合，安装后
 
 | 名称 | 说明 | 版本 |
 |------|------|------|
-| [weixin-article-fetcher](skills/weixin-article-fetcher/) | 抓取微信公众号文章，转换为干净的 Markdown，支持单篇和批量下载 | v1.0.0 |
+| [weixin-article-fetcher](skills/weixin-article-fetcher/) | 抓取微信公众号文章，转换为干净的 Markdown，支持单篇和批量下载 | v1.0.1 |
 | [r2-upload](skills/r2-upload/) | 上传文件/图片到 Cloudflare R2，返回永久公开 URL，支持本地路径、base64、base64 文件、远程 URL 四种��入 | v1.0.0 |
 
 ## 安装

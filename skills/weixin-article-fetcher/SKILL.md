@@ -2,8 +2,8 @@
 name: weixin-article-fetcher
 description: Fetch and extract WeChat (微信) public account articles from URLs. Use this skill whenever the user wants to scrape, crawl, fetch, read, extract, download, analyze, summarize, or process content from WeChat/微信 public account article links (mp.weixin.qq.com). Also trigger for Chinese requests like "抓取微信文章"、"读取公众号内容"、"提取微信链接"、"下载公众号文章"、"分析/总结这篇微信文章". Supports single URL or batch/bulk fetching of multiple articles. Outputs structured data including title, cover image, URL, and full article body in clean Markdown format.
 metadata: 
-  version: v1.0.0
-  author: jiangding1990
+  version: 1.0.1
+  author: JiangDing1990
 ---
 
 # WeChat Article Fetcher (微信公众号文章抓取)
@@ -14,14 +14,9 @@ Fetches WeChat public account articles by URL, bypassing the slider captcha via 
 
 ## How It Works
 
-WeChat article pages display a slider captcha to non-WeChat clients. Spoofing the iOS WeChat User-Agent bypasses it entirely — the server returns full HTML.
+WeChat article pages display a slider captcha to non-WeChat clients. Spoofing an iOS WeChat User-Agent bypasses it entirely — the server returns full HTML.
 
-**User-Agent used:**
-```
-Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)
-AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148
-MicroMessenger/8.0.34(0x16082222) NetType/WIFI Language/zh_CN
-```
+To reduce fingerprinting and rate-limit risk, the script rotates through a pool of realistic UA strings on every request — covering iOS 15–18, WeChat 8.0.47–8.0.52, and WIFI/4G/5G network types. Inter-request delays also include random jitter rather than a fixed interval.
 
 ---
 
@@ -69,7 +64,9 @@ https://mp.weixin.qq.com/s/def456
 
 ### Step 3: Output
 
-Each article produces a `.md` file named after the article title (illegal filesystem characters stripped). Batch jobs also produce `results.json`:
+**Single URL** — markdown is printed to stdout (no file written).
+
+**Multiple URLs / batch** — each article is saved as a `.md` file named after the title (illegal filesystem characters stripped), and a `results.json` summary is written:
 
 ```json
 {
@@ -121,7 +118,7 @@ The `.md` file structure:
 | Invalid / non-WeChat URL | Skipped immediately with warning |
 | Article deleted / restricted | Raises `ValueError` with reason, logged in `results.json` |
 | HTTP error / timeout | Retried up to 3×, then logged as failed |
-| Rate limiting (429) | Exponential back-off: 3s → 6s → 9s |
+| Rate limiting (429) | Linear back-off: 3s → 6s → 9s |
 | Missing `og:image` | `cover_image: null` in output |
 | No content div found | Empty `markdown` body, warning logged |
 | Duplicate filename (batch) | Auto-suffixed: `slug_1.md`, `slug_2.md`, … |
@@ -140,7 +137,7 @@ positional arguments:
 
 options:
   --batch  / -b      Text file with one URL per line
-  --output / -o      Output directory (default: ~/weixin_output/)
+  --output / -o      Output directory (default: stdout for single URL, ~/weixin_output/ for multiple)
   --delay  / -d      Seconds between requests (default: 1.5)
 ```
 
